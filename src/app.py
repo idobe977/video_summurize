@@ -1,21 +1,20 @@
+import warnings
+warnings.filterwarnings("ignore", category=SyntaxWarning)
+
 import streamlit as st
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 import json
 import torch
 from components.file_uploader import file_uploader_component
 from components.progress_tracker import ProgressTracker
 from utils.processor import MediaProcessor
 
-# טעינת משתני סביבה
-load_dotenv()
-
 # קונפיגורציה
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-MAX_FILE_SIZE_MB = int(os.getenv("MAX_FILE_SIZE_MB", "200"))
-SUPPORTED_FORMATS = json.loads(os.getenv("SUPPORTED_VIDEO_FORMATS", '["mp4", "avi", "mov"]'))
-WHISPER_MODEL = os.getenv("WHISPER_MODEL", "ivrit-ai/faster-whisper-v2-d4")
+GEMINI_API_KEY = st.secrets["api_keys"]["gemini"]
+MAX_FILE_SIZE_MB = st.secrets["file_settings"]["max_size_mb"]
+SUPPORTED_FORMATS = st.secrets["file_settings"]["supported_formats"]
+WHISPER_MODEL = st.secrets["models"]["whisper"]
 
 # הגדרות Streamlit
 st.set_page_config(
